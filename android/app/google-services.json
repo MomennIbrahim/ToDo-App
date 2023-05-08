@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "659681102105",
+    "project_id": "socialapp-c6419",
+    "storage_bucket": "socialapp-c6419.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659681102105:android:ae5edc3ded739f8a5ddd88",
+        "android_client_info": {
+          "package_name": "com.example.shop_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659681102105-grolmesremmpd6ms6ph1mv009q2g0e0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shop_app",
+            "certificate_hash": "a90354bfd2130a90e436d0ad7d12948ca1de882c"
+          }
+        },
+        {
+          "client_id": "659681102105-gr3oa63uq0a0j52fasdlshmrercr6rjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqLdSL_-BlrMJQF9x-2rY5Z09GE3jW2EE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "659681102105-3v25o46nstl1ictaomtih9du83ck182h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "659681102105-e16eag30jpbli0c2m5qr9d1k7om5omvs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.toDoApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659681102105:android:3f808e53db22e13c5ddd88",
+        "android_client_info": {
+          "package_name": "com.example.to_do_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659681102105-gr3oa63uq0a0j52fasdlshmrercr6rjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqLdSL_-BlrMJQF9x-2rY5Z09GE3jW2EE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "659681102105-3v25o46nstl1ictaomtih9du83ck182h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "659681102105-e16eag30jpbli0c2m5qr9d1k7om5omvs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.toDoApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
