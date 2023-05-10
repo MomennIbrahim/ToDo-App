@@ -56,12 +56,13 @@ class ToDoCubit extends Cubit<ToDoStates> {
 
   createToDO({
     required String title,
+    required String content,
     required String dateTime,
     required String time,
   }) {
     emit(CreateToDoLoadingState());
 
-    taskModel = TaskModel(title: title, dateTime: dateTime, time: time);
+    taskModel = TaskModel(title: title, dateTime: dateTime, time: time,content: content);
 
     FirebaseFirestore.instance
         .collection('users')
@@ -73,7 +74,7 @@ class ToDoCubit extends Cubit<ToDoStates> {
       print('${value.id} value');
       print(taskModel!.taskId);
       createToDOO(
-          title: title, dateTime: dateTime, time: time, taskId: value.id);
+          title: title, dateTime: dateTime, content: content,time: time, taskId: value.id);
       emit(CreateToDoSuccessState());
     }).catchError((error) {
       emit(CreateToDoErrorState());
@@ -83,6 +84,7 @@ class ToDoCubit extends Cubit<ToDoStates> {
 
   createToDOO({
     required String title,
+    required String content,
     required String dateTime,
     required String time,
     String? taskId,
@@ -90,7 +92,7 @@ class ToDoCubit extends Cubit<ToDoStates> {
     emit(CreateToDoLoadingState());
 
     taskModel =
-        TaskModel(title: title, dateTime: dateTime, time: time, taskId: taskId);
+        TaskModel(title: title, dateTime: dateTime, time: time, taskId: taskId,content: content);
 
     FirebaseFirestore.instance
         .collection('users')
@@ -232,11 +234,12 @@ class ToDoCubit extends Cubit<ToDoStates> {
     });
   }
 
-  updateTask({title, date, time, docId}) {
+  updateTask({title, date, time, docId,content}) {
     TaskModel model = TaskModel(
       title: title,
       dateTime: date,
       time: time,
+      content: content
     );
     FirebaseFirestore.instance
         .collection('users')

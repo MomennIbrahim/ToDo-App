@@ -15,15 +15,28 @@ class DoneScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
+
               defaultTextFormField(
                   controller: titleController,
                   keyBoardTyp: TextInputType.text,
                   context: context,
                   text: 'Task Title',
+                  maxLines: 1,
                   onSubmitted: () {}),
+
+              const SizedBox(height: 10.0,),
+
+              defaultTextFormField(
+                  controller: contentController,
+                  maxLines: 7,
+                  keyBoardTyp: TextInputType.text,
+                  context: context,
+                  text: 'Content',
+                  onSubmitted: () {}),
+
               const SizedBox(
                 height: 20.0,
               ),
@@ -36,6 +49,7 @@ class DoneScreen extends StatelessWidget {
                         Container(
                             decoration: BoxDecoration(
                                 color: Colors.green, borderRadius: BorderRadius.circular(20.0)),
+                            width: 100.0,
                             child: IconButton(
                                 onPressed: () {
                                   ToDoCubit.get(context).selectDate(context);
@@ -57,6 +71,7 @@ class DoneScreen extends StatelessWidget {
                         Container(
                             decoration: BoxDecoration(
                                 color: Colors.green, borderRadius: BorderRadius.circular(20.0)),
+                            width: 100.0,
                             child: IconButton(
                                 onPressed: () {
                                   ToDoCubit.get(context).selectTime(context);
@@ -79,10 +94,12 @@ class DoneScreen extends StatelessWidget {
                 onPressed: () {
                   ToDoCubit.get(context).createToDO(
                     title: titleController.text,
+                    content: contentController.text,
                     time: ToDoCubit.get(context).selectedTime.format(context).toString(),
                     dateTime: ToDoCubit.get(context).selectedDate.toString(),
                   );
                   titleController.text = '';
+                  contentController.text = '';
                   ToDoCubit.get(context).currentIndex = 0;
                 },
                 child: const Icon(Icons.add),

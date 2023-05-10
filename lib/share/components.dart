@@ -12,9 +12,11 @@ Widget defaultTextFormField({
   String? validateText,
   IconButton? suffixIcon,
   bool obscure = false,
+  int maxLines = 1
 }) {
   return TextFormField(
     controller: controller,
+    maxLines: maxLines,
     obscureText: obscure,
     keyboardType: keyBoardTyp,
     decoration: InputDecoration(

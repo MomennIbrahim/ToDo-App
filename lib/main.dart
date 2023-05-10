@@ -9,7 +9,7 @@ import 'package:to_do_app/modules/login/login_screen.dart';
 import 'package:to_do_app/share/bloc_observe.dart';
 import 'package:to_do_app/share/const.dart';
 import 'package:to_do_app/share/local/cache_helper.dart';
-import 'firebase_options.dart';
+import 'share/firebase_options.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

@@ -59,8 +59,17 @@ buildTaskItem(model, context, index) {
                   '${model.title} ',
                   style: const TextStyle(fontSize: 20.0),
                 ),
+                const SizedBox(height: 5.0,),
+                if(model.content=='')...[
+                  const Text('no content',style: TextStyle(color: Colors.blueGrey),)
+                ]else...[
+                  Text(
+                    '${model.content} ',
+                    style: const TextStyle(fontSize: 17.0,color: Colors.black54),
+                  ),
+                ],
                 const SizedBox(
-                  height: 10.0,
+                  height: 22.5,
                 ),
                 Row(
                   children: [
@@ -99,12 +108,24 @@ buildTaskItem(model, context, index) {
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       content: Column(
                         children: [
+
                           defaultTextFormField(
                               controller: titleController,
                               keyBoardTyp: TextInputType.text,
                               context: context,
                               text: 'Task Title',
                               onSubmitted: () {}),
+
+                          const SizedBox(height: 10.0,),
+
+                          defaultTextFormField(
+                              controller: contentController,
+                              maxLines: 7,
+                              keyBoardTyp: TextInputType.text,
+                              context: context,
+                              text: 'Content',
+                              onSubmitted: () {}),
+
                           const SizedBox(
                             height: 20.0,
                           ),
@@ -150,29 +171,59 @@ buildTaskItem(model, context, index) {
                           const SizedBox(
                             height: 40.0,
                           ),
-                          Container(
-                              width: 100.0,
-                              height: 60.0,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[100],
-                                borderRadius: BorderRadius.circular(20.0),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                    width: 100.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: TextButton(
+                                        child: const Text(
+                                          'Done',
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      onPressed: () {
+                                        ToDoCubit.get(context).updateTask(
+                                          title: titleController.text,
+                                          content: contentController.text,
+                                          time: ToDoCubit.get(context).selectedTime.format(context).toString(),
+                                          date: ToDoCubit.get(context).selectedDate.toString(),
+                                          docId: docTask[index],
+                                        );
+                                        titleController.text = '';
+                                        contentController.text='';
+                                        Navigator.of(context).pop();
+                                      },
+                                        )
+                                ),
                               ),
-                              child: TextButton(
-                                  child: const Text(
-                                    'Done',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                onPressed: () {
-                                  ToDoCubit.get(context).updateTask(
-                                    title: titleController.text,
-                                    time: ToDoCubit.get(context).selectedTime.format(context).toString(),
-                                    date: ToDoCubit.get(context).selectedDate.toString(),
-                                    docId: docTask[index],
-                                  );
-                                  titleController.text = '';
-                                  Navigator.of(context).pop();
-                                },
-                                  )),
+                              const SizedBox(width: 10.0,),
+                              Expanded(
+                                child: Container(
+                                    width: 100.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: TextButton(
+                                      child: const Text(
+                                        'Back',
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                ),
+                              ),
+                            ],
+                          ),
+
                         ],
                       ),
                       backgroundColor: Colors.white,

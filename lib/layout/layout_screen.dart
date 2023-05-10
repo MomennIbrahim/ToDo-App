@@ -44,4 +44,5 @@ class LayoutScreen extends StatelessWidget {
 }
 
 var titleController = TextEditingController();
+var contentController = TextEditingController();
 
