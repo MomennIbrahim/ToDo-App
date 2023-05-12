@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:to_do_app/layout/state.dart';
 import 'package:to_do_app/model/task_model.dart';
 import 'package:to_do_app/share/const.dart';
+import 'package:to_do_app/share/local/cache_helper.dart';
 import '../model/user_model.dart';
 import '../modules/setting.dart';
 import '../modules/add_task.dart';
@@ -19,12 +20,6 @@ class ToDoCubit extends Cubit<ToDoStates> {
 
   static ToDoCubit get(context) => BlocProvider.of(context);
 
-  List<String> titles = [
-    'Tasks',
-    'Add New Task',
-    'Setting',
-  ];
-
   int currentIndex = 0;
 
   List<Widget> screens = [
@@ -33,9 +28,45 @@ class ToDoCubit extends Cubit<ToDoStates> {
     const SettingScreen(),
   ];
 
+  List<String> enTitles = [
+    'Tasks',
+    'Add New Task',
+    'Setting',
+  ];
+  List<String> arTitles = [
+    'المهام',
+    'أضف مهام جديدة',
+    'الأعدادات',
+  ];
+
   void changeBottomNav(index) {
     currentIndex = index;
     emit(ChangeBottomNavBarState());
+  }
+
+  bool isLang = false;
+
+  void changeEnLang({fromShared}){
+    if(fromShared!=null){
+      isLang = fromShared;
+    }else{
+      isLang = false;
+      CacheHelper.saveData(key: 'isLang', value: isLang).then((value){
+        emit(EnLangState());
+      });
+    }
+  }
+
+  void changeArLang({fromShared}){
+    if(fromShared!=null){
+      isLang = fromShared;
+    }else{
+      isLang = true;
+      CacheHelper.saveData(key: 'isLang', value: isLang).then((value){
+        emit(ArLangState());
+      });
+    }
+
   }
 
   UserModel? userModel;

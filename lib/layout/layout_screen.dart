@@ -16,10 +16,11 @@ class LayoutScreen extends StatelessWidget {
           body: Scaffold(
             appBar: AppBar(
               title: Text(
-                cubit.titles[cubit.currentIndex],
-                style: const TextStyle(color: Colors.black),
+                cubit.isLang==false?
+                cubit.enTitles[cubit.currentIndex]:cubit.arTitles[cubit.currentIndex],
+                style: const TextStyle(color: Colors.white),
               ),
-              backgroundColor: Colors.white38,
+              backgroundColor: Colors.green,
               elevation: 0.0,
             ),
             bottomNavigationBar: BottomNavigationBar(
@@ -27,15 +28,27 @@ class LayoutScreen extends StatelessWidget {
               onTap: (index) {
                 cubit.changeBottomNav(index);
               },
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Task'),
+              items: [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.add_task), label: 'Add Task'),
+                    icon: const Icon(Icons.task),
+                    label: ToDoCubit.get(context).isLang == false
+                        ? 'Task'
+                        : 'المهام'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), label: 'Setting'),
+                    icon: const Icon(Icons.add_task),
+                    label:cubit.isLang == false
+                        ? 'Add Task'
+                        : 'أضف مهام جديدة'),
+                BottomNavigationBarItem(
+                    icon: const Icon(Icons.settings),
+                    label: cubit.isLang == false
+                        ? 'Setting'
+                        : 'الأعدادات'),
               ],
             ),
-            body: cubit.screens[cubit.currentIndex],
+            body: Directionality(
+                textDirection: cubit.isLang==false? TextDirection.ltr:TextDirection.rtl,
+                child: cubit.screens[cubit.currentIndex]),
           ),
         );
       },
@@ -45,4 +58,3 @@ class LayoutScreen extends StatelessWidget {
 
 var titleController = TextEditingController();
 var contentController = TextEditingController();
-

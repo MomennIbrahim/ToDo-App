@@ -20,8 +20,10 @@ void main() async{
   Bloc.observer = MyBlocObserver();
 
   uId = CacheHelper.getData(key: 'uId');
+  bool? isLang = CacheHelper.getData(key: 'isLang');
+  isLang??true;
+
   Widget widget;
-  // print(uId);
 
 
   if(uId != null){
@@ -30,17 +32,18 @@ void main() async{
     widget = LoginScreen();
   }
 
-  runApp(MyApp(startWidget: widget,));
+  runApp(MyApp(startWidget: widget,isLang: isLang,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, this.startWidget}) : super(key: key);
+  const MyApp({Key? key, this.startWidget, this.isLang}) : super(key: key);
   final  startWidget ;
+  final bool? isLang ;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context)=>ToDoCubit()..getUserData()..getTodoList(),
+      create: (BuildContext context)=>ToDoCubit()..getUserData()..getTodoList()..changeEnLang(fromShared: isLang)..changeArLang(fromShared: isLang),
       child: BlocConsumer<ToDoCubit,ToDoStates>(
         listener:(context,state){},
         builder:(context,state){

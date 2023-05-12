@@ -15,76 +15,159 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var image = ToDoCubit.get(context).image;
 
-    return BlocConsumer<ToDoCubit,ToDoStates>(
-      listener:(context,state){} ,
-      builder:(context,state){
+    return BlocConsumer<ToDoCubit, ToDoStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
             child: BuildCondition(
               condition: ToDoCubit.get(context).userModel != null,
-              builder: (context)=>Column(
+              builder: (context) => Column(
                 children: [
-                  Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        CircleAvatar(
-                          radius: 85.0,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 85.0,
-                            backgroundColor: Colors.black12,
-                            child: Container(
-                              width: 160,
-                              height: 160,
-                              clipBehavior:
-                              Clip.antiAliasWithSaveLayer,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(100.0),
-                              ),
-                              child: image != null
-                                  ? Image.file(
-                                File(image.path),
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              )
-                                  : SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: Image(
-                                  image: NetworkImage(
-                                      '${ToDoCubit.get(context).userModel!.image}'),
+                  Stack(alignment: Alignment.bottomRight, children: [
+                    CircleAvatar(
+                      radius: 85.0,
+                      backgroundColor: Colors.white,
+                      child: CircleAvatar(
+                        radius: 85.0,
+                        backgroundColor: Colors.black12,
+                        child: Container(
+                          width: 160,
+                          height: 160,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100.0),
+                          ),
+                          child: image != null
+                              ? Image.file(
+                                  File(image.path),
+                                  width: 100,
+                                  height: 100,
                                   fit: BoxFit.cover,
+                                )
+                              : SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: Image(
+                                    image: NetworkImage(
+                                        '${ToDoCubit.get(context).userModel!.image}'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        ToDoCubit.get(context).getProfileImage();
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Icon(Icons.camera_alt),
+                      ),
+                    ),
+                  ]),
+                  if (ToDoCubit.get(context).image != null) ...[
+                    if (state is! GetUserSuccessToDoState)
+                      defaultMaterialButton(
+                          onPressed: () {
+                            ToDoCubit.get(context).uploadImage();
+                          },
+                          text: ToDoCubit.get(context).isLang == false
+                              ? 'Upload'
+                              : 'رفع الصورة'),
+                  ],
+                  if (state is UserUpdateLoadingState)
+                    const LinearProgressIndicator(color: Colors.green),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Text(ToDoCubit.get(context).userModel!.name.toString(),
+                      style: const TextStyle(fontSize: 18.0)),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Text(ToDoCubit.get(context).userModel!.email.toString(),
+                      style: const TextStyle(fontSize: 18.0)),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Center(
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('أختر اللغة'),
+                              elevation: 5.0,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              content: Row(
+                                children: [
+                                  Expanded(
+                                      child: GestureDetector(
+                                        onTap:(){
+                                          ToDoCubit.get(context).changeEnLang();
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.green[100],
+                                              borderRadius: BorderRadius.circular(15.0),
+                                            ),
+                                            child: const Text(
+                                              'الأنجليزية',
+                                              textAlign: TextAlign.center,
+                                            )),
+                                      )),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Expanded(
+                                      child: GestureDetector(
+                                        onTap:(){
+                                          ToDoCubit.get(context).changeArLang();
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.green[100],
+                                            borderRadius: BorderRadius.circular(15.0),
+                                          ),
+                                          child: const Text('العربية',
+                                              textAlign: TextAlign.center),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              backgroundColor: Colors.white,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.green[100],
+                              borderRadius: BorderRadius.circular(15.0)),
+                          width:ToDoCubit.get(context).isLang==false? 180.0:120.0,
+                          height: 40.0,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                ToDoCubit.get(context).isLang==false?'Change Language':'تـغير اللغة',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: (){
-                            ToDoCubit.get(context).getProfileImage();
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Icon(Icons.camera_alt),
-                          ),
-                        ),
-                      ]),
-                  if(ToDoCubit.get(context).image != null)...[
-                    if(state is! GetUserSuccessToDoState)
-                      defaultMaterialButton(onPressed: (){
-                        ToDoCubit.get(context).uploadImage();
-                      }, text: 'Upload'),
-                  ],
-
-                  if(state is UserUpdateLoadingState)
-                    const LinearProgressIndicator(color: Colors.green),
-                  const SizedBox(height: 15.0,),
-                  Text(ToDoCubit.get(context).userModel!.name.toString(),style: const TextStyle(fontSize: 18.0)),
-                  const SizedBox(height: 15.0,),
-                  Text(ToDoCubit.get(context).userModel!.email.toString(),style: const TextStyle(fontSize: 18.0)),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Center(
@@ -99,17 +182,19 @@ class SettingScreen extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                                 color: Colors.green[100],
-                                borderRadius: BorderRadius.circular(15.0)
-                            ),
-                            width: 100.0,
+                                borderRadius: BorderRadius.circular(15.0)),
+                            width: 120.0,
                             height: 40.0,
-                            child: const Center(
-                              child: Text(
-                                'Logout',
-                                style: TextStyle(
-                                    color: Colors.green,
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal:8.0),
+                                child: Text(
+                                  ToDoCubit.get(context).isLang==false?'Logout':'تسجيل الخروج',
+                                  style: const TextStyle(
+                                    color: Colors.black,
                                     fontSize: 14.0,
-                                    fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -117,14 +202,14 @@ class SettingScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 ],
               ),
-              fallback: (context)=> const Center(child: CircularProgressIndicator()),
+              fallback: (context) =>
+                  const Center(child: CircularProgressIndicator()),
             ),
           ),
         );
-      } ,
+      },
     );
   }
 }

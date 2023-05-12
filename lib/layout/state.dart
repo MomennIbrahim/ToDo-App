@@ -3,7 +3,8 @@ abstract class ToDoStates{}
 class InitialToDoState extends ToDoStates{}
 
 class ChangeBottomNavBarState extends ToDoStates{}
-class CheckBoxState extends ToDoStates{}
+class EnLangState extends ToDoStates{}
+class ArLangState extends ToDoStates{}
 
 class CreateToDoLoadingState extends ToDoStates{}
 class CreateToDoSuccessState extends ToDoStates{
