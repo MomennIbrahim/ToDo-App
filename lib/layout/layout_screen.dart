@@ -15,6 +15,7 @@ class LayoutScreen extends StatelessWidget {
         return Scaffold(
           body: Scaffold(
             appBar: AppBar(
+              centerTitle: true,
               title: Text(
                 cubit.isLang==false?
                 cubit.enTitles[cubit.currentIndex]:cubit.arTitles[cubit.currentIndex],

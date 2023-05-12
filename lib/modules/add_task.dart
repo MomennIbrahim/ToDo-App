@@ -103,7 +103,7 @@ class DoneScreen extends StatelessWidget {
                       contentController.text = '';
                       ToDoCubit.get(context).currentIndex = 0;
                     },
-                    child: const Icon(Icons.add),
+                    child: Text(ToDoCubit.get(context).isLang==false?'Done':'تم'),
                   ),
                 ],
               ),

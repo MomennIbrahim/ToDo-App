@@ -29,8 +29,8 @@ class TaskScreen extends StatelessWidget {
                       height: 10.0,
                     ),
                 itemCount: ToDoCubit.get(context).list.length),
-            fallback: (context) => const Center(
-              child: Text('No tasks yet'),
+            fallback: (context) => Center(
+              child: Text(ToDoCubit.get(context).isLang==false?'No tasks yet':'لا توجد مهام حتى الآن'),
             ),
           ),
         );
