@@ -11,7 +11,7 @@ import 'package:to_do_app/share/const.dart';
 import 'package:to_do_app/share/local/cache_helper.dart';
 import 'share/firebase_options.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -21,32 +21,45 @@ void main() async{
 
   uId = CacheHelper.getData(key: 'uId');
   bool? isLang = CacheHelper.getData(key: 'isLang');
-  isLang??true;
+  bool? isDark = CacheHelper.getData(key: 'isDark');
+  isDark ?? false;
+  isLang ?? true;
 
   Widget widget;
 
-
-  if(uId != null){
+  if (uId != null) {
     widget = const LayoutScreen();
-  }else{
+  } else {
     widget = LoginScreen();
   }
 
-  runApp(MyApp(startWidget: widget,isLang: isLang,));
+  runApp(MyApp(
+    startWidget: widget,
+    isLang: isLang,
+    isDark: isDark,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, this.startWidget, this.isLang}) : super(key: key);
-  final  startWidget ;
-  final bool? isLang ;
+  const MyApp({Key? key, this.startWidget, this.isLang, this.isDark})
+      : super(key: key);
+
+  final startWidget;
+  final bool? isLang;
+  final bool? isDark;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context)=>ToDoCubit()..getUserData()..getTodoList()..changeEnLang(fromShared: isLang)..changeArLang(fromShared: isLang),
-      child: BlocConsumer<ToDoCubit,ToDoStates>(
-        listener:(context,state){},
-        builder:(context,state){
+      create: (BuildContext context) => ToDoCubit()
+        ..getUserData()
+        ..getTodoList()
+        ..changeEnLang(fromShared: isLang)
+        ..changeArLang(fromShared: isLang)
+        ..changeMode(fromShared: isDark),
+      child: BlocConsumer<ToDoCubit, ToDoStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(

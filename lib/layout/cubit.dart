@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -42,6 +41,19 @@ class ToDoCubit extends Cubit<ToDoStates> {
   void changeBottomNav(index) {
     currentIndex = index;
     emit(ChangeBottomNavBarState());
+  }
+
+  bool isDark = false;
+  void changeMode({fromShared}){
+    if(fromShared != null)
+      {
+        isDark = fromShared;
+      }else{
+      isDark = !isDark;
+      CacheHelper.saveData(key: 'isDark', value: isDark).then((value){
+        emit(ChangeThemeState());
+      });
+    }
   }
 
   bool isLang = false;
@@ -163,11 +175,13 @@ class ToDoCubit extends Cubit<ToDoStates> {
         .then((value) {
       value.ref.getDownloadURL().then((value) {
         updateUser(image: value);
+        emit(UploadImageSuccessState());
       }).catchError((error) {
         emit(UploadImageErrorState());
       });
     }).catchError((error) {
       emit(UploadImageErrorState());
+      print(error.toString());
     });
   }
 
@@ -283,6 +297,12 @@ class ToDoCubit extends Cubit<ToDoStates> {
     }).catchError((error) {
       emit(UpdateTaskErrorState());
       print(error.toString());
+    });
+  }
+
+  removeToken(){
+    CacheHelper.removeData(key: 'uId').then((value) {
+      emit(RemoveTokenSuccessState());
     });
   }
 }

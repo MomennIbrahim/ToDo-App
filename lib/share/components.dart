@@ -12,7 +12,8 @@ Widget defaultTextFormField({
   String? validateText,
   IconButton? suffixIcon,
   bool obscure = false,
-  int maxLines = 1
+  int maxLines = 1,
+  bool enabled = true,
 }) {
   return TextFormField(
     controller: controller,
@@ -25,7 +26,8 @@ Widget defaultTextFormField({
             borderRadius: BorderRadius.circular(25.0)),
         hintText: text,
         filled: true,
-        fillColor: Colors.black12,
+        fillColor: ToDoCubit.get(context).isDark? Colors.white70 : Colors.black12,
+        enabled: enabled ,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         iconColor: Theme.of(context).primaryColor),

@@ -3,6 +3,7 @@ abstract class ToDoStates{}
 class InitialToDoState extends ToDoStates{}
 
 class ChangeBottomNavBarState extends ToDoStates{}
+class ChangeThemeState extends ToDoStates{}
 class EnLangState extends ToDoStates{}
 class ArLangState extends ToDoStates{}
 
@@ -42,4 +43,6 @@ class UserUpdateErrorState extends ToDoStates{}
 class DeleteTaskErrorState extends ToDoStates{}
 
 class UpdateTaskErrorState extends ToDoStates{}
+
+class RemoveTokenSuccessState extends ToDoStates{}
 

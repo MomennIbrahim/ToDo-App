@@ -13,7 +13,7 @@ class LayoutScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = ToDoCubit.get(context);
         return Scaffold(
-          body: Scaffold(
+          backgroundColor: cubit.isDark == true? Colors.black:Colors.white,
             appBar: AppBar(
               centerTitle: true,
               title: Text(
@@ -21,7 +21,7 @@ class LayoutScreen extends StatelessWidget {
                 cubit.enTitles[cubit.currentIndex]:cubit.arTitles[cubit.currentIndex],
                 style: const TextStyle(color: Colors.white),
               ),
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.green[400],
               elevation: 0.0,
             ),
             bottomNavigationBar: BottomNavigationBar(
@@ -50,8 +50,7 @@ class LayoutScreen extends StatelessWidget {
             body: Directionality(
                 textDirection: cubit.isLang==false? TextDirection.ltr:TextDirection.rtl,
                 child: cubit.screens[cubit.currentIndex]),
-          ),
-        );
+          );
       },
     );
   }

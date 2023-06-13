@@ -131,6 +131,7 @@ class LoginScreen extends StatelessWidget {
                                   const SizedBox(
                                     height: 30.0,
                                   ),
+                                  state is ToDoLoginLoadingState? const Center(child: CircularProgressIndicator(strokeWidth: 1.5,)):
                                   defaultMaterialButton(
                                       onPressed: () {
                                         if (formKey.currentState!.validate()) {

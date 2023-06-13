@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_app/layout/cubit.dart';
 import 'package:to_do_app/layout/state.dart';
+import 'package:to_do_app/modules/login/login_screen.dart';
 import '../share/components.dart';
-import '../share/local/cache_helper.dart';
-import 'login/login_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -16,7 +15,15 @@ class SettingScreen extends StatelessWidget {
     var image = ToDoCubit.get(context).image;
 
     return BlocConsumer<ToDoCubit, ToDoStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is RemoveTokenSuccessState) {
+          navigateTo(context, LoginScreen());
+          ToDoCubit.get(context).currentIndex = 0;
+        }
+        if (state is UploadImageSuccessState) {
+          successSnackBar(context: context, text: 'Uploaded successfully');
+        }
+      },
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(20.0),
@@ -62,22 +69,33 @@ class SettingScreen extends StatelessWidget {
                       onTap: () {
                         ToDoCubit.get(context).getProfileImage();
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Icon(Icons.camera_alt),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: ToDoCubit.get(context).isDark
+                              ? Colors.white
+                              : Colors.green,
+                        ),
                       ),
                     ),
                   ]),
-                  if (ToDoCubit.get(context).image != null) ...[
-                    if (state is! GetUserSuccessToDoState)
-                      defaultMaterialButton(
-                          onPressed: () {
-                            ToDoCubit.get(context).uploadImage();
-                          },
-                          text: ToDoCubit.get(context).isLang == false
-                              ? 'Upload'
-                              : 'رفع الصورة'),
-                  ],
+                  if (state is PickedImageSuccessState)
+                    defaultMaterialButton(
+                        onPressed: () {
+                          ToDoCubit.get(context).uploadImage();
+                        },
+                        text: ToDoCubit.get(context).isLang == false
+                            ? 'Upload'
+                            : 'رفع الصورة'),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  if (state is UploadImageLoadingState)
+                    const Center(
+                        child: CircularProgressIndicator(
+                      strokeWidth: 1.5,
+                    )),
                   if (state is UserUpdateLoadingState)
                     const LinearProgressIndicator(color: Colors.green),
                   const SizedBox(
@@ -108,38 +126,40 @@ class SettingScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                       child: GestureDetector(
-                                        onTap:(){
-                                          ToDoCubit.get(context).changeEnLang();
-                                          Navigator.pop(context);
-                                        },
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.green[100],
-                                              borderRadius: BorderRadius.circular(15.0),
-                                            ),
-                                            child: const Text(
-                                              'الأنجليزية',
-                                              textAlign: TextAlign.center,
-                                            )),
-                                      )),
+                                    onTap: () {
+                                      ToDoCubit.get(context).changeEnLang();
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.green[100],
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: const Text(
+                                          'الأنجليزية',
+                                          textAlign: TextAlign.center,
+                                        )),
+                                  )),
                                   const SizedBox(
                                     width: 10.0,
                                   ),
                                   Expanded(
                                       child: GestureDetector(
-                                        onTap:(){
-                                          ToDoCubit.get(context).changeArLang();
-                                          Navigator.pop(context);
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.green[100],
-                                            borderRadius: BorderRadius.circular(15.0),
-                                          ),
-                                          child: const Text('العربية',
-                                              textAlign: TextAlign.center),
-                                        ),
-                                      )),
+                                    onTap: () {
+                                      ToDoCubit.get(context).changeArLang();
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.green[100],
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                      ),
+                                      child: const Text('العربية',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  )),
                                 ],
                               ),
                               backgroundColor: Colors.white,
@@ -150,13 +170,56 @@ class SettingScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: Colors.green[100],
                               borderRadius: BorderRadius.circular(15.0)),
-                          width:ToDoCubit.get(context).isLang==false? 180.0:120.0,
+                          width: ToDoCubit.get(context).isLang == false
+                              ? 180.0
+                              : 120.0,
                           height: 40.0,
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                ToDoCubit.get(context).isLang==false?'Change Language':'تـغير اللغة',
+                                ToDoCubit.get(context).isLang == false
+                                    ? 'Change Language'
+                                    : 'تـغير اللغة',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Center(
+                      child: InkWell(
+                        onTap: () {
+                          ToDoCubit.get(context).changeMode();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.green[100],
+                              borderRadius: BorderRadius.circular(15.0)),
+                          width: 120.0,
+                          height: 40.0,
+                          child: Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                ToDoCubit.get(context).isDark
+                                    ? ToDoCubit.get(context).isLang
+                                        ? 'وضع الضوء'
+                                        : 'Light Mode'
+                                    : ToDoCubit.get(context).isLang
+                                        ? 'الوضع المظلم'
+                                        : 'Dark Mode',
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 14.0,
@@ -173,9 +236,7 @@ class SettingScreen extends StatelessWidget {
                     child: Center(
                       child: InkWell(
                         onTap: () {
-                          CacheHelper.removeData(key: 'uId').then((value) {
-                            navigateTo(context, LoginScreen());
-                          });
+                          ToDoCubit.get(context).removeToken();
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 14.0),
@@ -187,9 +248,12 @@ class SettingScreen extends StatelessWidget {
                             height: 40.0,
                             child: Center(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal:8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
-                                  ToDoCubit.get(context).isLang==false?'Logout':'تسجيل الخروج',
+                                  ToDoCubit.get(context).isLang == false
+                                      ? 'Logout'
+                                      : 'تسجيل الخروج',
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 14.0,
