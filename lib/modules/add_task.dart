@@ -13,7 +13,6 @@ class DoneScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
    var dateController = TextEditingController();
-   var timeController = TextEditingController();
 
     return BlocConsumer<ToDoCubit, ToDoStates>(
       listener: (context, state) {},

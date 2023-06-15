@@ -7,6 +7,8 @@ class ChangeThemeState extends ToDoStates{}
 class EnLangState extends ToDoStates{}
 class ArLangState extends ToDoStates{}
 
+class OnDismissState extends ToDoStates{}
+
 class CreateToDoLoadingState extends ToDoStates{}
 class CreateToDoSuccessState extends ToDoStates{
 

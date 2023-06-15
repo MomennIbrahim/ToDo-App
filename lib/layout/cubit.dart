@@ -265,7 +265,7 @@ class ToDoCubit extends Cubit<ToDoStates> {
     });
   }
 
-   deleteTask({required String docId}) {
+   removeTask({required String docId}) {
       FirebaseFirestore.instance
         .collection('users')
         .doc(uId)

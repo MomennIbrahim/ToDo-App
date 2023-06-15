@@ -22,15 +22,28 @@ class TaskScreen extends StatelessWidget {
             condition: ToDoCubit.get(context).list.isNotEmpty,
             builder: (context) => ListView.separated(
                 itemBuilder: (context, index) {
-                  return buildTaskItem(
-                      ToDoCubit.get(context).list[index], context, index);
+                  return Dismissible(
+                      background: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Colors.red[300]),
+                      ),
+                      onDismissed: (direction) {
+                        ToDoCubit.get(context)
+                            .removeTask(docId: docTask[index]);
+                      },
+                      key: ValueKey(ToDoCubit.get(context).list[index]),
+                      child: buildTaskItem(
+                          ToDoCubit.get(context).list[index], context, index));
                 },
                 separatorBuilder: (context, index) => const SizedBox(
                       height: 10.0,
                     ),
                 itemCount: ToDoCubit.get(context).list.length),
             fallback: (context) => Center(
-              child: Text(ToDoCubit.get(context).isLang==false?'No tasks yet':'لا توجد مهام حتى الآن'),
+              child: Text(ToDoCubit.get(context).isLang == false
+                  ? 'No tasks yet'
+                  : 'لا توجد مهام حتى الآن'),
             ),
           ),
         );
@@ -106,7 +119,7 @@ buildTaskItem(model, context, index) {
           ),
           IconButton(
               onPressed: () {
-                ToDoCubit.get(context).deleteTask(docId: docTask[index]);
+                ToDoCubit.get(context).removeTask(docId: docTask[index]);
               },
               icon: const Icon(Icons.delete)),
           IconButton(
